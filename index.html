@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title>Entregable 1</title>
+  </head>
+   <body>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+       <a class="navbar-brand" href="#">Paint</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse" id="navbarText">
+         <ul class="navbar-nav mr-auto">
+           <li class="nav-item active">
+             <a class="nav-link" href="#"> Inicio <span class="sr-only"></span></a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#">Trabajos</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#">Contacto</a>
+           </li>
+         </ul>
+         <span class="navbar-text">
+           TUDAI - 2020. Practico entregable.
+         </span>
+       </div>
+     </nav>
+              <!--Fin de barra de nav.-->
+              <div class="container-fluid">
+                <div class="row">
+                 <div class="col-8">
+                   <div class="areaDibujo" id="areaDibujo">
+                     <canvas id="canvasDibujo" width="812" height="650"></canvas>
+                     <canvas id="canvasAUX" width="812" height="650"></canvas>
+
+
+                   </div>
+                 </div>
+
+                 <div class="col-4">
+                   <div class="sideBar">
+                     <div class="accordion" id="accordionExample">
+                        <div class="card">
+                          <div class="card">
+                            <div class="card-header" id="headingThree">
+                              <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                  Herramientas
+                                </button>
+                              </h2>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                              <div class="card-body">
+                                <div id="goma_borrar" class="dropdown-item">
+                                  <button id="goma_borrar" type="button" class="btn btn-light" >Goma de borrar</button>
+                                </div>
+                              </div>
+                              <div class="dropdown-divider"></div>
+                              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                <div class="card-body">
+                                  <div id="lapiz" class="dropdown-item" >
+                                  <button id="lapiz" type="button" class="btn btn-light" >Lapiz</button>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="dropdown-divider"></div>
+                              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                              <div class="card-body">
+                                <div class="cargaImagen" class="dropdown-item">
+                                      <input class="dropdown-item" type="file" type="button"  id="imagen_input"/>
+                                      <button class="dropdown-item" type="file" type="button" id="imagen_carga" class="btn btn-light" >Cargar imagen</button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                              <div class="card-body">
+                                <div id="lapiz" class="dropdown-item">
+                                  <button type="button" id="limpiarCanvas" type="button" class="btn btn-light" >Limpiar Canvas</button>
+                                </div>
+                              </div>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                          <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Filtros
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="filtroGris">
+                              <button type="button" id="filtroGrisid"class="btn btn-light" onclick="FiltroON(1)">Filtro Gris</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="filtroSepia">
+                                <button type="button" id="filtroSepiaid"  class="btn btn-light" onclick="FiltroON(2)" >Filtro Sepia</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="filtroBinario">
+                                <button type="button" id="filtroBlurid"class="btn btn-light" onclick="FiltroON(3)">Filtro Blur</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="filtroBrillo">
+                                <button type="button" id="filtroBrilloid" class="btn btn-light" onclick="FiltroON(4, 50)">Filtro Brillo</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="filtroDeteccionBordes">
+                                <button type="button" id="filtroSaturacionid" class="btn btn-light" onclick="FiltroON(5)">Filtro Ruido</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="filtroNegativo">
+                                  <button type="button" id="filtroNegativoid" name="filtroNegativo" class="btn btn-light" onclick="FiltroON(6)">Filtro negativo</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+
+
+
+                 <div class="card">
+                    <div class="card-header" id="headingTwo">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          Guardar Trabajo
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                      <div class="card-body" class="dropdown-item">
+                        <a type="button" name="btnDescarga" id="btnDescarga" download="new_file.png" class="btn btn-light" >Descargar Imagen</a>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+               </div>
+             </div>
+
+   </body>
+  <script type="text/javascript" src="JS\main.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,7 @@
+body{
+  background-color: #FFFFF0;
+
+}
+#lapiz, #goma_borrar, #limpiarCanvas, #btnDescarga, #filtroBlurid,#filtroBrilloid,#filtroNegativoid,#filtroSaturacionid,#filtroSepiaid,#filtroGrisid{
+  width: 100%;
+}
