@@ -2,6 +2,8 @@
 //    -------------------------------------------------------------------       DECLARADO DE CANVAS/CONTEXT/
 let canvasMain = document.getElementById('canvasDibujo');
 let ctx = canvasMain.getContext('2d');
+//representa los pixeles del canvas.
+//El area del cavas marcadas por esquinas, representadas por puntos.
 let imageData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height);
 
 
@@ -120,7 +122,6 @@ function setPixel(imageData, x, y, r, g, b, a){
     imageData.data[index + 2]= b;
     imageData.data[index + 3]= a;
 }
-
 //     ---------------------------------------------------------------          FILTROS
 function FiltroON(filtro){
   let image = new Image();
@@ -136,11 +137,13 @@ function FiltroON(filtro){
                                                 //        FILTRO GRIS
             let data = imageData.data;
             for (let i = 0; i < data.length; i += 4) {
-              let brightness = 0.25 * data[i] + 0.75 * data[i + 1] + 0.05 * data[i + 2];
-              data[i] = brightness;
-              data[i + 1] = brightness;
-              data[i + 1] = brightness;
+              let gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+              data[i]     = gray; // red
+              data[i + 1] = gray; // green
+              data[i + 2] = gray;
                 }
+
+            //Metodo para pintar los pixeles a traves del contexto.
             ctx.putImageData(imageData,0,0);
                       }
           break;
@@ -164,19 +167,34 @@ function FiltroON(filtro){
           }
           break;
           case 3:{
-                                //        FILTRO BLUR
-                for ( let x = 0; x < imageData.width; x++){
-                  for( let y = 0; y < imageData.height; y++){
-                    let curpos = x * 4 + canvasMain.width * y * 4;
-                      let pixels = imageData.data;
-                      for (let i = 0; i < pixels.length; i += 4) {
-                      pixels[i] =     pixels[i] * curpos  + 3;
-                      pixels[i + 1] = pixels[i + 1] * curpos + 7;
-                      pixels[i + 2] = pixels[i + 2] * curpos - 1;
-                           }
-                      ctx.putImageData(imageData, 0, 0);
-                        }
-                      }}
+            let red = 0.0;
+            let green = 0.0;
+            let blue = 0.0;
+            let mat = [[1/27, 1/27, 1/27],
+                      [1/27, 1/27, 1/27],
+                      [1/27, 1/27, 1/27]];
+            for (let x = 0; x < imageData.width; x++) {
+              for (let y = 2; y < imageData.height-2; y++) {
+                red = getR(imageData, x-2, y-2) * mat + getR(imageData, x-1, y-2) * mat +  getR(imageData,x, y-2) * mat;
+                    + getR(imageData, x-2, y-1) * mat + getR(imageData, x-1, y-1) * mat +  getR(imageData,x, y-1) * mat;
+                    + getR(imageData, x-2, y)   * mat + getR(imageData,x-1, y) * mat +  getR(imageData,x, y)      * mat;
+
+              green = getG(imageData,x-2, y-2) * mat +  getG(imageData,x-1, y-2) * mat +  getG(imageData,x, y-2)  * mat;
+                    +  getG(imageData,x-2, y-1) * mat +  getG(imageData,x-1, y-1) * mat +  getG(imageData,x, y-1) * mat;
+                    +  getG(imageData,x-2, y+2) * mat +  getG(imageData,x-1, y+2) * mat +  getG(imageData,x, y+2) * mat;
+
+              blue = getB(imageData,x-2, y-2) * mat +  getB(imageData,x-1, y-2) * mat +  getB(imageData,x, y-2) * mat;
+                  +  getB(imageData,x-2, y-1) * mat +  getB(imageData,x-1, y-1) * mat +  getB(imageData,x, y-1) * mat;
+                  +  getB(imageData,x-2, y+1) * mat + getB(imageData,x-1, y+1)  * mat +  getB(imageData,x, y+1) * mat;
+
+
+                setPixel(imageData, x, y, red, green, blue);
+              }
+
+}
+ctx.putImageData(imageData, 0, 0);
+}
+
                 break;
                 case 4:{
                   //        FILTRO BRILLO
@@ -206,19 +224,12 @@ function FiltroON(filtro){
                 break;
                 case 6:{
                   //        FILTRO NEGATIVO
-                  for ( let x = 0; x < imageData.width; x++){
-                    for( let y = 0; y < imageData.height; y++){
-                      let r=getR(imageData,x,y);
-                      let g=getG(imageData,x,y);
-                      let b=getB(imageData,x,y);
-
-                      r = 255 - r;
-                      g = 255 - g;
-                      b = 255 - b;
-
-                      setPixel(imageData,x,y,r,g,b,255);
+                  let data = imageData.data;
+                  for (let i = 0; i < data.length; i += 4) {
+                    data[i]     = 255 - data[i];     // red
+                    data[i + 1] = 255 - data[i + 1]; // green
+                    data[i + 2] = 255 - data[i + 2]; // blue
                   }
-              }
               ctx.putImageData(imageData,0,0);
             }
         }
