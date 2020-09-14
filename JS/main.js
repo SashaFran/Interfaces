@@ -148,50 +148,58 @@ function FiltroON(filtro){
                       }
           break;
           case 2:{
-                                //        FILTRO SEPIA
-            for ( let x = 0; x < imageData.width; x++){
-              for( let y = 0; y < imageData.height; y++){
-                let r=getR(imageData,x,y);
-                let g=getG(imageData,x,y);
-                let b=getB(imageData,x,y);
-                let luminosidad = .3 * r + .6 * g + .1 * b;
-                r = Math.min(luminosidad + 40, 255);
-                g = Math.min(luminosidad + 15, 255);
-                b = luminosidad;
+                      //        FILTRO SEPIA
+              for ( let x = 0; x < imageData.width; x++){
+                for( let y = 0; y < imageData.height; y++){
+                  let r=getR(imageData,x,y);
+                  let g=getG(imageData,x,y);
+                  let b=getB(imageData,x,y);
+                  let luminosidad = .3 * r + .6 * g + .1 * b;
+                  r = Math.min(luminosidad + 40, 255);
+                  g = Math.min(luminosidad + 15, 255);
+                  b = luminosidad;
 
-                setPixel(imageData,x,y,r,g,b,255);
-                    }
-                }
-            ctx.putImageData(imageData,0,0);
+                  setPixel(imageData,x,y,r,g,b,255);
+                      }
+                  }
+              ctx.putImageData(imageData,0,0);
 
-          }
-          break;
+            }
           case 3:{
-            let red = 0.0;
-            let green = 0.0;
-            let blue = 0.0;
-            let mat = [[1/27, 1/27, 1/27],
-                      [1/27, 1/27, 1/27],
-                      [1/27, 1/27, 1/27]];
-            for (let x = 0; x < imageData.width; x++) {
-              for (let y = 2; y < imageData.height-2; y++) {
-                red = getR(imageData, x-2, y-2) * mat + getR(imageData, x-1, y-2) * mat +  getR(imageData,x, y-2) * mat;
-                    + getR(imageData, x-2, y-1) * mat + getR(imageData, x-1, y-1) * mat +  getR(imageData,x, y-1) * mat;
-                    + getR(imageData, x-2, y)   * mat + getR(imageData,x-1, y) * mat +  getR(imageData,x, y)      * mat;
+            //                          FILTRO BLUR
+          let mat = [1 / 9, 1 / 9, 1 / 9,
+                     1 / 9, 1 / 9, 1 / 9,
+                     1 / 9, 1 / 9, 1 / 9];
+          let size = Math.sqrt(mat.length);
+          let half = Math.floor(size / 2);
 
-              green = getG(imageData,x-2, y-2) * mat +  getG(imageData,x-1, y-2) * mat +  getG(imageData,x, y-2)  * mat;
-                    +  getG(imageData,x-2, y-1) * mat +  getG(imageData,x-1, y-1) * mat +  getG(imageData,x, y-1) * mat;
-                    +  getG(imageData,x-2, y+2) * mat +  getG(imageData,x-1, y+2) * mat +  getG(imageData,x, y+2) * mat;
+          let inputData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height).data;
+          let data = imageData.data;
+          for (let j = 0; j < canvasMain.width; j++) {
+            for (let i = 0; i < canvasMain.height; i++) {
 
-              blue = getB(imageData,x-2, y-2) * mat +  getB(imageData,x-1, y-2) * mat +  getB(imageData,x, y-2) * mat;
-                  +  getB(imageData,x-2, y-1) * mat +  getB(imageData,x-1, y-1) * mat +  getB(imageData,x, y-1) * mat;
-                  +  getB(imageData,x-2, y+1) * mat + getB(imageData,x-1, y+1)  * mat +  getB(imageData,x, y+1) * mat;
+                  let r = 0;
+                  let g = 0;
+                  let b = 0;
 
-
-                setPixel(imageData, x, y, red, green, blue);
+                  for (let y = 0; y < size; y++) {
+                      for (let x = 0; x < size; x++) {
+                          let weight = (mat[y * size + x]);
+                          let neighborY = Math.min(canvasMain.height - 1, Math.max(0, i + y - half));
+                          let neighborX = Math.min(canvasMain.width  - 1, Math.max(0, j + x - half));
+                          let inputIndex = (neighborY * canvasMain.width + neighborX) * 4;
+                          r += inputData[inputIndex] * weight;
+                          g += inputData[inputIndex + 1] * weight;
+                          b += inputData[inputIndex + 2] * weight;
+                      }
+                  }
+                  let outputIndex = ((i * canvasMain.width + j) * 4);
+                  data[outputIndex] = r;
+                  data[outputIndex + 1] = g;
+                  data[outputIndex + 2] = b;
               }
+          }
 
-}
 ctx.putImageData(imageData, 0, 0);
 }
 
@@ -231,6 +239,47 @@ ctx.putImageData(imageData, 0, 0);
                     data[i + 2] = 255 - data[i + 2]; // blue
                   }
               ctx.putImageData(imageData,0,0);
+            }
+            case 7:{
+              //            FILTRO SATURACION
+              let mat = [1 / 9, 1 / 9, 1 / 9,
+                         1 / 9, 1 / 9, 1 / 9,
+                         1 / 9, 1 / 9, 1 / 9];
+              let size = Math.sqrt(mat.length);
+              let half = Math.floor(size / 2);
+
+              let inputData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height).data;
+              let data = imageData.data;
+
+              let inputIndex;
+              let outputIndex;
+
+              for (let j = 0; j < canvasMain.width; j++) {
+                for (let i = 0; i < canvasMain.height; i++) {
+
+                      let r = 0;
+                      let g = 0;
+                      let b = 0;
+
+                      for (let y = 0; y < size; y++) {
+                          for (let x = 0; x < size; x++) {
+                              let weight = (mat[y * size + x]*2);
+                              let neighborY = Math.min(canvasMain.height - 1, Math.max(0, i + y - half));
+                              let neighborX = Math.min(canvasMain.width  - 1, Math.max(0, j + x - half));
+                              inputIndex = (neighborY * canvasMain.width + neighborX) * 4;
+                              r += inputData[inputIndex] * weight;
+                              g += inputData[inputIndex + 1] * weight;
+                              b += inputData[inputIndex + 2] * weight;
+                          }
+                      }
+                      outputIndex = ((i * canvasMain.width + j) * 4);
+                      data[outputIndex] = r;
+                      data[outputIndex + 1] = g;
+                      data[outputIndex + 2] = b;
+                  }
+              }
+
+    ctx.putImageData(imageData, 0, 0);
             }
         }
     }
