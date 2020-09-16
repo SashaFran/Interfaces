@@ -128,7 +128,7 @@ function descargar_Imagen(){
    canvasImage.setAttribute('download', value + '.png');
    canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
  }}else{
-   return
+   return;
  }
 
 //  canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
