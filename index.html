@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
    <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="CSS\style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="utf-8">
     <title>Entregable 1</title>
@@ -71,9 +71,7 @@
                               <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                               <div class="card-body">
                                 <div class="cargaImagen" class="dropdown-item">
-                                      <input class="dropdown-item" type="file" type="button"  id="imagen_input"/>
-                                      <button class="dropdown-item" type="file" type="button" id="imagen_carga" class="btn btn-light" >Cargar imagen</button>
-                                </div>
+                                      <input class="dropdown-item" type="file" type="button"  id="imagen_input"/></div>
                               </div>
                             </div>
                             <div class="dropdown-divider"></div>
@@ -134,7 +132,14 @@
                           <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                             <div class="card-body">
                               <div class="filtroNegativo">
-                                  <button type="button" id="filtroNegativoid" name="filtroNegativo" class="btn btn-light" onclick="FiltroON(6)">Filtro negativo</button>
+                                  <button type="button" id="filtroNegativoid" name="filtroNegativo" class="btn btn-light" onclick="FiltroON(6)">Filtro Negativo</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="filtroNegativo">
+                                  <button type="button" id="filtroNegativoid" name="filtroNegativo" class="btn btn-light" onclick="FiltroON(7)">Filtro Saturación</button>
                               </div>
                             </div>
                           </div>
@@ -153,7 +158,7 @@
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                       <div class="card-body" class="dropdown-item">
-                        <a type="button" name="btnDescarga" id="btnDescarga" download="new_file.png" class="btn btn-light" >Descargar Imagen</a>
+                        <a type="button" id="btnDescarga"  value="" class="btn btn-light" onclick="descargar_Imagen()" >Descargar Imagen</a>
                       </div>
                     </div>
                   </div>
