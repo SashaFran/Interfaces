@@ -2,12 +2,8 @@
 //    -------------------------------------------------------------------       DECLARADO DE CANVAS/CONTEXT/
 let canvasMain = document.getElementById('canvasDibujo');
 let ctx = canvasMain.getContext('2d');
-//representa los pixeles del canvas.
-//El area del cavas marcadas por esquinas, representadas por puntos.
 let imageData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height);
-
-
-
+let imageDatarestore = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height);
 
 
 //      -----------------------------------------------------------------       BORRADO CANVAS
@@ -31,13 +27,23 @@ document.getElementById("imagen_input").addEventListener('change', function(e){
                 let imagescaledwidth = canvasMain.width;
                 let imagescaledheight = canvasMain.width * imageAspectRatio;
                 ctx.drawImage(image,0,0,imagescaledwidth,imagescaledheight);
+                imageDatarestore = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height);
             });
             image.src = evt.target.result;
+            saveBefore(imageDatarestore);
         });
         inputCarga.value="";
         reader.readAsDataURL(file);
+
+
     }
   });
+
+  function saveBefore(){
+    ctx.putImageData(imageDatarestore,0,0);
+      //image.src= .target.result;
+    }
+
 
   //      -------------------------------------------------------------         PINTADO / GOMA
 
@@ -95,11 +101,39 @@ document.getElementById("imagen_input").addEventListener('change', function(e){
     }
 
 //      ---------------------------------------------------------------         DESCARGA DE LA IMAGEN.
-document.getElementById("btnDescarga").addEventListener('click', function(){
+/*document.getElementById("btnDescarga").addEventListener('click', function(){
   let canvasImage = document.getElementById('btnDescarga');
-  canvasImage.setAttribute('download', 'File_Interfaces.png');
-  canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace("image/png", "image/octet-stream"));
-});
+//  canvasImage.setAttribute('download', 'File_Interfaces.png');
+  //canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
+//  canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
+
+
+}
+});*/
+function descargar_Imagen(){
+
+ let value = prompt("Ingrese nombre del archivo a guardar junto a su extension (.png/.jpg/.jpge): (png por defecto)");
+ let canvasImage = document.getElementById('btnDescarga');
+ if (value!= null){
+ if (value.includes(".png")){
+   canvasImage.setAttribute('download', value );
+   canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
+ }else if(value.includes(".jpg")){
+   canvasImage.setAttribute('download', value );
+   canvasImage.setAttribute('href', canvasMain.toDataURL("image/jpg").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
+ }else if(value.includes(".jpge")){
+   canvasImage.setAttribute('download', value );
+   canvasImage.setAttribute('href', canvasMain.toDataURL("image/jpge").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
+ }else{
+   canvasImage.setAttribute('download', value + '.png');
+   canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
+ }}else{
+   return
+ }
+
+//  canvasImage.setAttribute('href', canvasMain.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
+
+}
 
 //      --------------------------------------------------------------          SETEO DE COLORES
 function getR(imageData , x , y){
@@ -122,89 +156,96 @@ function setPixel(imageData, x, y, r, g, b, a){
     imageData.data[index + 2]= b;
     imageData.data[index + 3]= a;
 }
+
 //     ---------------------------------------------------------------          FILTROS
+let filterActive = false;
 function FiltroON(filtro){
   let image = new Image();
   image.src = canvasMain.toDataURL("image/png");
-  image.onload= function (){
+      image.addEventListener('load', function()  {
     let imageAspectRatio = (1.0 * canvasMain.height)/canvasMain.width;
     let imageScaledWidth = canvasMain.width;
     let imageScaledHeight = canvasMain.width * imageAspectRatio;
     ctx.drawImage(canvasMain,0,0,imageScaledWidth,imageScaledHeight);
     let imageData = ctx.getImageData(0,0,imageScaledWidth,imageScaledHeight);
+
+
+  if(!filterActive){
+    while(!filterActive){
         switch (filtro) {
           case 1:{
-                                                //        FILTRO GRIS
+                                              //        FILTRO GRIS
             let data = imageData.data;
             for (let i = 0; i < data.length; i += 4) {
-              let gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
-              data[i]     = gray; // red
-              data[i + 1] = gray; // green
-              data[i + 2] = gray;
+              let brightness = 0.25 * data[i] + 0.75 * data[i + 1] + 0.05 * data[i + 2];
+          //  let brightness = ((data[i] + data[i+1] + data[i+2])/3);
+              data[i] = brightness;
+              data[i + 1] = brightness;
+              data[i + 2] = brightness;
                 }
-
-            //Metodo para pintar los pixeles a traves del contexto.
             ctx.putImageData(imageData,0,0);
-                      }
+            filterActive = true;
+          }
           break;
-          case 2:{
-                      //        FILTRO SEPIA
-              for ( let x = 0; x < imageData.width; x++){
-                for( let y = 0; y < imageData.height; y++){
-                  let r=getR(imageData,x,y);
-                  let g=getG(imageData,x,y);
-                  let b=getB(imageData,x,y);
-                  let luminosidad = .3 * r + .6 * g + .1 * b;
-                  r = Math.min(luminosidad + 40, 255);
-                  g = Math.min(luminosidad + 15, 255);
-                  b = luminosidad;
 
-                  setPixel(imageData,x,y,r,g,b,255);
+          case 2:{
+                                //        FILTRO SEPIA
+            for ( let x = 0; x < imageData.width; x++){
+              for( let y = 0; y < imageData.height; y++){
+                let r=getR(imageData,x,y);
+                let g=getG(imageData,x,y);
+                let b=getB(imageData,x,y);
+                let luminosidad = .3 * r + .6 * g + .1 * b;
+                r = Math.min(luminosidad + 40, 255);
+                g = Math.min(luminosidad + 15, 255);
+                b = luminosidad;
+
+                setPixel(imageData,x,y,r,g,b,255);
+                    }
+                }
+            ctx.putImageData(imageData,0,0);
+            filterActive = true;
+          }
+          break;
+
+          case 3:{
+                                //        FILTRO BLUR
+            let mat = [1 / 9, 1 / 9, 1 / 9,
+                       1 / 9, 1 / 9, 1 / 9,
+                       1 / 9, 1 / 9, 1 / 9];
+            let size = Math.sqrt(mat.length);
+            let half = Math.floor(size / 2);
+
+            let inputData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height).data;
+            let data = imageData.data;
+            for (let j = 0; j < canvasMain.width; j++) {
+                for (let i = 0; i < canvasMain.height; i++) {
+                      let r = 0;
+                      let g = 0;
+                      let b = 0;
+                      for (let y = 0; y < size; y++) {
+                        for (let x = 0; x < size; x++) {
+                            let weight = (mat[y * size + x]);
+                            let neighborY = Math.min(canvasMain.height - 1, Math.max(0, i + y - half));
+                              let neighborX = Math.min(canvasMain.width  - 1, Math.max(0, j + x - half));
+                              let inputIndex = (neighborY * canvasMain.width + neighborX) * 4;
+                              r += inputData[inputIndex] * weight;
+                              g += inputData[inputIndex + 1] * weight;
+                              b += inputData[inputIndex + 2] * weight;
+                          }
                       }
+              let outputIndex = ((i * canvasMain.width + j) * 4);
+              data[outputIndex] = r;
+              data[outputIndex + 1] = g;
+              data[outputIndex + 2] = b;
+                    }
                   }
               ctx.putImageData(imageData,0,0);
-
+              filterActive = true;
             }
-          case 3:{
-            //                          FILTRO BLUR
-          let mat = [1 / 9, 1 / 9, 1 / 9,
-                     1 / 9, 1 / 9, 1 / 9,
-                     1 / 9, 1 / 9, 1 / 9];
-          let size = Math.sqrt(mat.length);
-          let half = Math.floor(size / 2);
-
-          let inputData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height).data;
-          let data = imageData.data;
-          for (let j = 0; j < canvasMain.width; j++) {
-            for (let i = 0; i < canvasMain.height; i++) {
-
-                  let r = 0;
-                  let g = 0;
-                  let b = 0;
-
-                  for (let y = 0; y < size; y++) {
-                      for (let x = 0; x < size; x++) {
-                          let weight = (mat[y * size + x]);
-                          let neighborY = Math.min(canvasMain.height - 1, Math.max(0, i + y - half));
-                          let neighborX = Math.min(canvasMain.width  - 1, Math.max(0, j + x - half));
-                          let inputIndex = (neighborY * canvasMain.width + neighborX) * 4;
-                          r += inputData[inputIndex] * weight;
-                          g += inputData[inputIndex + 1] * weight;
-                          b += inputData[inputIndex + 2] * weight;
-                      }
-                  }
-                  let outputIndex = ((i * canvasMain.width + j) * 4);
-                  data[outputIndex] = r;
-                  data[outputIndex + 1] = g;
-                  data[outputIndex + 2] = b;
-              }
-          }
-
-ctx.putImageData(imageData, 0, 0);
-}
-
                 break;
-                case 4:{
+
+            case 4:{
                   //        FILTRO BRILLO
                   var option= 50;
                   let data = imageData.data;
@@ -215,10 +256,11 @@ ctx.putImageData(imageData, 0, 0);
                       data[i+2]=data[i+2]+option;
                       }
                       ctx.putImageData(imageData,0,0);
-                  }
-                  break;
+                      filterActive = true;
+                    }
+                break;
 
-                case 5:{
+           case 5:{
                   //        FILTRO RUIDO
                   let pixels = imageData.data;
                      for (let i = 0; i < pixels.length; i += 4) {
@@ -228,59 +270,85 @@ ctx.putImageData(imageData, 0, 0);
                       pixels[i + 2] = pixels[i + 2] * color / 255;
                      }
                     ctx.putImageData(imageData, 0, 0);
+                    filterActive = true;
                   }
                 break;
-                case 6:{
-                  //        FILTRO NEGATIVO
-                  let data = imageData.data;
-                  for (let i = 0; i < data.length; i += 4) {
-                    data[i]     = 255 - data[i];     // red
-                    data[i + 1] = 255 - data[i + 1]; // green
-                    data[i + 2] = 255 - data[i + 2]; // blue
+
+            case 6:{
+                  //       FILTRO NEGATIVO
+                  for ( let x = 0; x < imageData.width; x++){
+                    for( let y = 0; y < imageData.height; y++){
+                      let r=getR(imageData,x,y);
+                      let g=getG(imageData,x,y);
+                      let b=getB(imageData,x,y);
+
+                      r = 255 - r;
+                      g = 255 - g;
+                      b = 255 - b;
+
+                      setPixel(imageData,x,y,r,g,b,255);
+                        }
+                    }
+                    ctx.putImageData(imageData,0,0);
+                    filterActive = true;
                   }
-              ctx.putImageData(imageData,0,0);
-            }
-            case 7:{
-              //            FILTRO SATURACION
-              let mat = [1 / 9, 1 / 9, 1 / 9,
-                         1 / 9, 1 / 9, 1 / 9,
-                         1 / 9, 1 / 9, 1 / 9];
-              let size = Math.sqrt(mat.length);
-              let half = Math.floor(size / 2);
+                  break;
 
-              let inputData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height).data;
-              let data = imageData.data;
+              case 7:{
+                          //            FILTRO SATURACION
+            let mat = [1 / 9, 1 / 9, 1 / 9,
+                       1 / 9, 1 / 9, 1 / 9,
+                       1 / 9, 1 / 9, 1 / 9];
+            let size = Math.sqrt(mat.length);
+            let half = Math.floor(size / 2);
 
-              let inputIndex;
-              let outputIndex;
+            let inputData = ctx.getImageData(0, 0, canvasMain.width, canvasMain.height).data;
+            let data = imageData.data;
+            for (let j = 0; j < canvasMain.width; j++) {
+              for (let i = 0; i < canvasMain.height; i++) {
 
-              for (let j = 0; j < canvasMain.width; j++) {
-                for (let i = 0; i < canvasMain.height; i++) {
+          let r = 0;
+          let g = 0;
+          let b = 0;
 
-                      let r = 0;
-                      let g = 0;
-                      let b = 0;
-
-                      for (let y = 0; y < size; y++) {
-                          for (let x = 0; x < size; x++) {
-                              let weight = (mat[y * size + x]*2);
-                              let neighborY = Math.min(canvasMain.height - 1, Math.max(0, i + y - half));
-                              let neighborX = Math.min(canvasMain.width  - 1, Math.max(0, j + x - half));
-                              inputIndex = (neighborY * canvasMain.width + neighborX) * 4;
-                              r += inputData[inputIndex] * weight;
-                              g += inputData[inputIndex + 1] * weight;
-                              b += inputData[inputIndex + 2] * weight;
-                          }
-                      }
-                      outputIndex = ((i * canvasMain.width + j) * 4);
-                      data[outputIndex] = r;
-                      data[outputIndex + 1] = g;
-                      data[outputIndex + 2] = b;
-                  }
+          for (let y = 0; y < size; y++) {
+              for (let x = 0; x < size; x++) {
+                  let weight = (mat[y * size + x]*2);
+                  let neighborY = Math.min(canvasMain.height - 1, Math.max(0, i + y - half));
+                  let neighborX = Math.min(canvasMain.width  - 1, Math.max(0, j + x - half));
+                  let inputIndex = (neighborY * canvasMain.width + neighborX) * 4;
+                  r += inputData[inputIndex] * weight;
+                  g += inputData[inputIndex + 1] * weight;
+                  b += inputData[inputIndex + 2] * weight;
+                }
               }
+              let outputIndex = ((i * canvasMain.width + j) * 4);
+              data[outputIndex] = r;
+              data[outputIndex + 1] = g;
+              data[outputIndex + 2] = b;
+              }
+            }
+          ctx.putImageData(imageData, 0, 0);
+          filterActive = true;
+        }
+        break;
+}
+}
+}else{
+  comrpobarFiltro();
+}
+    });
+  }
+    function comrpobarFiltro() {
 
-    ctx.putImageData(imageData, 0, 0);
+            if (imageData) {
+                if (filterActive) {
+                    filterActive = false;
+                    saveBefore(imageData);
+                }
+                else {
+
+                  //  ctx.clearRect(0, 0, canvasMain.width, canvasMain.height);
+                }
             }
         }
-    }
-}
