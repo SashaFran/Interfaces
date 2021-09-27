@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="utf-8">
+  <title>Joker - Entregable 3</title>
+  <link rel="stylesheet" type="text/css" href="CSS\contacto.css">
+  <link rel="stylesheet" type="text/css" href="CSS/style.css">
+
+  <link rel="stylesheet" type="text/css" href="CSS/font.css">
+  <link rel="stylesheet" type="text/css" href="CSS/background.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+  <body>
+    <!--                               LOADER                                -->
+  <div id="loader_"> </div>
+    <!--                            FIN LOADER                               -->
+
+      <!--                       NAVEGADOR                         -->
+  <div id="page">
+    <section>
+      <div class="fixed-top navegador">
+      <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4" style="background-color: #000000">
+          <div class="list-group">
+            <a href="index.html" class="list-group-item list-group-item-action">Home</a>
+            <a href="calendario.html" class="list-group-item list-group-item-action">Calendario</a>
+            <a href="contacto.html" class="list-group-item list-group-item-action">Contacto</a>
+            <a href="trailer.html" class="list-group-item list-group-item-action">Trailer</a>
+            <a href="sipnosis.html" class="list-group-item list-group-item-action">Sipnosis</a>
+          </div>
+        </div>
+      </div>
+      <nav class="navbar navbar-dark bg-dark " style="background-color: #000000">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+    </div>
+  </section>
+    <!--                       Parallax                         -->
+  <section>
+  <div id="parallax"> </div>
+  </section>
+
+<!--                              INPUTS                                     -->
+<form class="" action="index.html" method="post" >
+
+<div class="container" id="formulario">
+      <ul>
+        <li>
+          <p class="pull-left">
+            <label for="first_name" data-aos="fade-down">Nombre</label>
+            <input data-aos="fade-left" type="text" name="first_name" placeholder="Arthur"  required/>
+          </p>
+          <p class="pull-right">
+            <label for="last_name" data-aos="fade-down">Apellido</label>
+            <input data-aos="fade-left" type="text" name="last_name" placeholder="Fleck"  required/>
+          </p>
+
+          <p>
+            <label for="email" data-aos="fade-down">email <span class="req">*</span></label>
+            <input data-aos="fade-left" type="email" name="email" placeholder="xxxxxx@gmail.com"  required/>
+          </p>
+          <div class="input-field col s12">
+            <label for="textarea1" data-aos="fade-down">Textarea</label>
+            <textarea id="textarea1" class="materialize-textarea" data-aos="fade-left" onblur="validateEmail(this);"></textarea>
+
+          </div>
+        </li>
+
+          <button class="btn btn-submit glow-on-hover" type="submit" value="Submit">Enviar!</button>
+      </ul>
+</div>
+
+</form>
+<!--                               FIN INPUTS                                -->
+  <section class="footer">
+    <footer>
+      <ul class="footer-links">
+        <li>
+          <a href="https://policies.warnerbros.com/privacy/">PRIVACY POLICY</a>
+        </li>
+        <li>
+          <a href="href=https://policies.warnerbros.com/terms/en-us/">TERMS OF USE</a>
+        </li>
+        <li>
+          <a href="">PRIVACY SETTINGS</a>
+        </li>
+        <li id="btnCreditsCenter">
+          <a href="">CREDITS </a>
+        </li>
+      </ul>
+      <p class="creditos_footer">JOKER and all related characters and elements © & ™ DC Comics.</p>
+    </footer>
+
+  </section>
+  </body>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  <script src="JS/main.js"></script>
+</html>

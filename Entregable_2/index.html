@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Connect 4 -Entregable 2-</title>
+    <link rel="stylesheet" type="text/css" href="CSS/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  -->  </head>
+  <body>
+
+              <!--                       NAVEGADOR                         -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffc107;">
+           <a class="navbar-brand" href="#">Juego ONLINE - 4 en linea</a>
+           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="collapse navbar-collapse" id="navbarText">
+             <ul class="navbar-nav mr-auto">
+               <li class="nav-item active">
+                 <a class="nav-link" href="#"> Inicio <span class="sr-only"></span></a>
+               </li>
+               <li class="nav-item">
+                 <a class="nav-link" href="#">Trabajos</a>
+               </li>
+               <li class="nav-item">
+                 <a class="nav-link" href="#">Contacto</a>
+               </li>
+             </ul>
+             <span class="navbar-text">
+               TUDAI - 2020. Practico entregable Nº 2.
+             </span>
+           </div>
+         </nav>
+
+         <div class="container rounded-pill display-4">
+           <button title="Source Title" type="button" name="button" id="reset"  class="btn btn-outline-warning "><strong>Reinciar juego</strong></button>
+         </div>
+          <!--                          SEPARADOR                           -->
+          <hr class="style1">
+          <!--                         SEPARADOR                            -->
+
+          <div class="container font-weight-light">
+            <div class="row .bg-gradient-info" >
+              <div class="col .bg-gradient-info" >
+                <h3  id="J1" class="rounded-pill font-weight-light" >Jugador 1</h3>
+              </div>
+              <div class="col">
+              </div>
+              <div class="col">
+                <h3  id="J2" class="rounded-pill font-weight-light">Jugador 2</h3>
+              </div>
+            </div>
+          </div>
+
+
+          <!--                          SEPARADOR                           -->
+                    <hr class="style1">
+          <!--                         SEPARADOR                            -->
+
+
+          <div class="canvas" id="contenedorCanvas">
+            <canvas width="1000" height="550" id="canvasMain"></canvas>
+          </div>
+
+  </body>
+  <script src="JS/Jugador.js"></script>
+  <script src="JS/GameBoard.js"></script>
+  <script src="JS/fichas.js"></script>
+  <script src="JS/main.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'roboto';
+  src: url(../fonts/Roboto-Regular.ttf);
+}
+
+.sipnosis, .movie-title{
+  font-family: 'roboto'
+}
